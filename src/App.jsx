@@ -19,7 +19,7 @@ const styleSheet = `
       margin-left: auto !important;
       margin-right: auto !important;
       display: block !important;
-      width: 200px !important; /* Tamaño más adecuado para celular */
+      width: 350px !important; /* Tamaño más adecuado para celular */
     }
     
     h1 {
