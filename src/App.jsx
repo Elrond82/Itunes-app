@@ -13,7 +13,7 @@ const styleSheet = `
     }
     .header-logo {
       width: 100% !important;
-      margin-left: 25px !important;
+      margin-left: 125px !important;
     }
   }
 `;
