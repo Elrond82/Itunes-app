@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
 import { itunesService, formatTime } from './services/itunesService';
 
+// ESTILO INYECTADO PARA ASEGURAR EL RESPONSIVE
+const styleSheet = `
+  @media (max-width: 600px) {
+    .responsive-container {
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+    .responsive-item {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .header-logo {
+      width: 100% !important;
+    }
+  }
+`;
+
 function App() {
   const [artistInput, setArtistInput] = useState('');
   const [albumInput, setAlbumInput] = useState('');
@@ -9,7 +26,6 @@ function App() {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [loadingSongs, setLoadingSongs] = useState(false);
 
-  // Búsqueda por Artista
   const handleSearchArtist = async () => {
     if (!artistInput) return;
     const results = await itunesService.getAlbumsByArtist(artistInput);
@@ -18,7 +34,6 @@ function App() {
     setSelectedAlbum(null);
   };
 
-  // Búsqueda por Álbum
   const handleSearchAlbum = async () => {
     if (!albumInput) return;
     const results = await itunesService.getAlbumsByTitle(albumInput);
@@ -27,179 +42,91 @@ function App() {
     setSelectedAlbum(null);
   };
 
-  // Acción al hacer CLICK en un disco
   const handleAlbumClick = async (album) => {
     setLoadingSongs(true);
     setSelectedAlbum(album);
     const tracks = await itunesService.getSongs(album.collectionId);
     setSongs(tracks);
     setLoadingSongs(false);
-    
-    // Scroll suave hacia abajo para ver las canciones
     setTimeout(() => {
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }, 100);
   };
 
   return (
-    <div style={{ 
-      padding: '10px', 
-      maxWidth: '1000px', 
-      margin: '0 auto', 
-      fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-      backgroundColor: '#fdfdfd'
-    }}>
+    <div style={{ padding: '10px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <style>{styleSheet}</style>
       
-      {/* HEADER RESPONSIVO */}
-      <header style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        marginBottom: '30px',
-        paddingTop: '20px'
-      }}>
+      <header style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '30px' }}>
         <img 
           src="/tu-imagen.png" 
-          style={{ width: '85%', maxWidth: '350px', height: 'auto' }} 
-          alt="iTunes Logo" 
+          className="header-logo"
+          style={{ width: '400px', maxWidth: '100%', height: 'auto' }} 
+          alt="Logo" 
         />
-        <h1 style={{ 
-          color: '#333', 
-          marginTop: '15px', 
-          textAlign: 'center', 
-          fontSize: '1.8rem',
-          fontWeight: '700' 
-        }}>
-          iTunes Music Explorer
-        </h1>
+        <h1 style={{ textAlign: 'center', fontSize: '1.8rem' }}>iTunes Music Explorer</h1>
       </header>
 
-      {/* SECCIÓN DE BUSCADORES (Solución para el desorden en celu) */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '20px', 
-        justifyContent: 'center', 
-        marginBottom: '40px', 
-        flexWrap: 'wrap' // Crucial para que no se amontonen en el celular
-      }}>
+      {/* CONTENEDOR DE BUSCADORES CON CLASE RESPONSIVA */}
+      <div className="responsive-container" style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '40px' }}>
         
-        {/* Buscador de Artista */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', maxWidth: '400px', padding: '0 10px' }}>
-          <label style={{ fontWeight: '600', color: '#555' }}>Buscar por Artista</label>
+        <div className="responsive-item" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '45%' }}>
+          <label style={{ fontWeight: 'bold' }}>Buscar por Artista</label>
           <div style={{ display: 'flex', gap: '5px' }}>
             <input 
               placeholder="Ej: Green Day..." 
               value={artistInput}
               onChange={(e) => setArtistInput(e.target.value)}
-              style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '16px' }}
+              style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px' }}
             />
-            <button 
-              onClick={handleSearchArtist} 
-              style={{ padding: '0 20px', cursor: 'pointer', background: '#0070c9', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600' }}
-            >
-              Buscar
-            </button>
+            <button onClick={handleSearchArtist} style={{ padding: '0 15px', cursor: 'pointer', background: '#0070c9', color: '#fff', border: 'none', borderRadius: '8px' }}>Buscar</button>
           </div>
         </div>
 
-        {/* Buscador de Disco */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', maxWidth: '400px', padding: '0 10px' }}>
-          <label style={{ fontWeight: '600', color: '#555' }}>Buscar por Disco</label>
+        <div className="responsive-item" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '45%' }}>
+          <label style={{ fontWeight: 'bold' }}>Buscar por Disco</label>
           <div style={{ display: 'flex', gap: '5px' }}>
             <input 
-              type="text" 
               placeholder="Ej: American Idiot..." 
               value={albumInput}
               onChange={(e) => setAlbumInput(e.target.value)}
-              style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '16px' }}
+              style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px' }}
             />
-            <button 
-              onClick={handleSearchAlbum} 
-              style={{ padding: '0 20px', cursor: 'pointer', background: '#0070c9', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600' }}
-            >
-              Buscar
-            </button>
+            <button onClick={handleSearchAlbum} style={{ padding: '0 15px', cursor: 'pointer', background: '#0070c9', color: '#fff', border: 'none', borderRadius: '8px' }}>Buscar</button>
           </div>
         </div>
       </div>
 
-      {/* NIVEL 2: GRILLA DE ÁLBUMES */}
+      {/* RESULTADOS (GRILLA) */}
       {albums.length > 0 && (
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', 
-          gap: '15px', 
-          marginBottom: '50px',
-          padding: '0 10px'
-        }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '15px' }}>
           {albums.map(album => (
-            <div 
-              key={album.collectionId} 
-              onClick={() => handleAlbumClick(album)}
-              style={{ 
-                cursor: 'pointer', 
-                textAlign: 'center', 
-                padding: '10px', 
-                borderRadius: '12px',
-                border: selectedAlbum?.collectionId === album.collectionId ? '2px solid #0070c9' : '1px solid #eee',
-                backgroundColor: selectedAlbum?.collectionId === album.collectionId ? '#f0f8ff' : '#fff',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
-              }}
-            >
-              <img 
-                src={album.artworkUrl100.replace('100x100', '200x200')} 
-                alt="cover" 
-                style={{ width: '100%', borderRadius: '8px' }} 
-              />
-              <p style={{ fontSize: '12px', fontWeight: 'bold', margin: '10px 0 5px 0', color: '#333' }}>
-                {album.collectionName}
-              </p>
+            <div key={album.collectionId} onClick={() => handleAlbumClick(album)} style={{ cursor: 'pointer', textAlign: 'center', border: '1px solid #eee', padding: '10px', borderRadius: '10px' }}>
+              <img src={album.artworkUrl100.replace('100x100', '200x200')} style={{ width: '100%', borderRadius: '8px' }} alt="cover" />
+              <p style={{ fontSize: '12px', fontWeight: 'bold', marginTop: '10px' }}>{album.collectionName}</p>
             </div>
           ))}
         </div>
       )}
 
-      {/* NIVEL 3: LISTA DE CANCIONES */}
-      {loadingSongs && <p style={{ textAlign: 'center', color: '#0070c9' }}>Cargando canciones...</p>}
-      
+      {/* TABLA DE CANCIONES */}
+      {loadingSongs && <p style={{ textAlign: 'center' }}>Cargando...</p>}
       {!loadingSongs && songs.length > 0 && (
-        <div style={{ 
-          background: '#fff', 
-          padding: '20px', 
-          borderRadius: '20px', 
-          border: '1px solid #eee', 
-          boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
-          overflowX: 'auto', // Permite scroll lateral si la tabla es muy ancha para el celu
-          margin: '0 10px 40px 10px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '25px' }}>
-            <img 
-              src={selectedAlbum?.artworkUrl100.replace('100x100', '120x120')} 
-              alt="cover" 
-              style={{ borderRadius: '10px', width: '80px', height: '80px' }} 
-            />
-            <div>
-              <h2 style={{ margin: 0, fontSize: '1.2rem' }}>{selectedAlbum?.collectionName}</h2>
-              <p style={{ color: '#0070c9', margin: 0, fontWeight: '600' }}>{selectedAlbum?.artistName}</p>
-            </div>
-          </div>
-
-          <table style={{ width: '100%', minWidth: '350px', borderCollapse: 'collapse' }}>
+        <div style={{ marginTop: '30px', overflowX: 'auto', background: '#fff', padding: '15px', borderRadius: '10px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
+          <table style={{ width: '100%', minWidth: '300px', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ textAlign: 'left', borderBottom: '2px solid #f0f0f0', color: '#999', fontSize: '11px', textTransform: 'uppercase' }}>
-                <th style={{ padding: '10px 5px' }}>#</th>
-                <th style={{ padding: '10px 5px' }}>Título</th>
-                <th style={{ padding: '10px 5px', textAlign: 'right' }}>Duración</th>
+              <tr style={{ textAlign: 'left', borderBottom: '2px solid #eee' }}>
+                <th style={{ padding: '10px' }}>#</th>
+                <th style={{ padding: '10px' }}>Track</th>
+                <th style={{ padding: '10px', textAlign: 'right' }}>Min</th>
               </tr>
             </thead>
             <tbody>
               {songs.map((song, index) => (
-                <tr key={song.trackId} style={{ borderBottom: '1px solid #fafafa' }}>
-                  <td style={{ padding: '12px 5px', color: '#ccc', fontSize: '13px' }}>{index + 1}</td>
-                  <td style={{ padding: '12px 5px', fontSize: '14px', fontWeight: '500', color: '#333' }}>{song.trackName}</td>
-                  <td style={{ padding: '12px 5px', textAlign: 'right', fontSize: '13px', color: '#777' }}>
-                    {formatTime(song.trackTimeMillis)}
-                  </td>
+                <tr key={song.trackId} style={{ borderBottom: '1px solid #f9f9f9' }}>
+                  <td style={{ padding: '10px' }}>{index + 1}</td>
+                  <td style={{ padding: '10px' }}>{song.trackName}</td>
+                  <td style={{ padding: '10px', textAlign: 'right' }}>{formatTime(song.trackTimeMillis)}</td>
                 </tr>
               ))}
             </tbody>
