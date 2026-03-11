@@ -85,7 +85,7 @@ function App() {
         </div>
 
         <div className="responsive-item" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '45%' }}>
-          <label style={{ fontWeight: 'bold' }}>Buscar por Disco</label>
+          <label style={{ fontWeight: 'bold' }}>Buscar por </label>
           <div style={{ display: 'flex', gap: '5px' }}>
             <input 
               placeholder="Ej: American Idiot..." 
