@@ -72,7 +72,7 @@ function App() {
       <div className="responsive-container" style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '40px' }}>
         
         <div className="responsive-item" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '45%' }}>
-          <label style={{ fontWeight: 'bold' }}>Buscar por Artista</label>
+          <label style={{ fontWeight: 'bold' }}>Buscar por Artist</label>
           <div style={{ display: 'flex', gap: '5px' }}>
             <input 
               placeholder="Ej: Green Day..." 
