@@ -43,9 +43,18 @@ function App() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif' }}>
-      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <img src="/tu-imagen.png" width="400" alt="Mi Logo" />
-        <h1 style={{ color: '#333' }}>iTunes Music Explorer</h1>
+      <header style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        marginBottom: '40px' 
+      }}>
+        <img 
+          src="/tu-imagen.png" 
+          style={{ width: '100%', maxWidth: '400px', height: 'auto' }} 
+          alt="Mi Logo" 
+        />
+        <h1 style={{ color: '#333', marginTop: '20px' }}>iTunes Music Explorer</h1>
       </header>
 
       {/* SECCIÓN DE BUSCADORES */}
