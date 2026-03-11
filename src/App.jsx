@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { itunesService, formatTime } from './services/itunesService';
 
-// ESTILO INYECTADO PARA ASEGURAR EL RESPONSIVE
 const styleSheet = `
   @media (max-width: 600px) {
     .responsive-container {
       flex-direction: column !important;
-      align-items: center !important;
+      align-items: stretch !important;
     }
     .responsive-item {
       width: 100% !important;
@@ -17,6 +16,7 @@ const styleSheet = `
     }
   }
 `;
+
 
 function App() {
   const [artistInput, setArtistInput] = useState('');
