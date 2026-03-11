@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import { itunesService, formatTime } from './services/itunesService';
 
+// Definimos los estilos responsivos fuera del componente
 const styleSheet = `
   @media (max-width: 600px) {
     .responsive-container {
       flex-direction: column !important;
-      align-items: stretch !important;
+      align-items: center !important;
     }
+    
     .responsive-item {
       width: 100% !important;
       max-width: 100% !important;
     }
+
     .header-logo {
-      width: 100% !important;
-      margin-left: 125px !important;
+      /* En mobile reseteamos cualquier margen y centramos */
+      margin-left: auto !important;
+      margin-right: auto !important;
+      display: block !important;
+      width: 200px !important; /* Tamaño más adecuado para celular */
+    }
+    
+    h1 {
+      font-size: 1.5rem !important;
     }
   }
 `;
-
 
 function App() {
   const [artistInput, setArtistInput] = useState('');
@@ -62,13 +71,18 @@ function App() {
         <img 
           src="/tu-imagen.png" 
           className="header-logo"
-          style={{ width: '400px', maxWidth: '100%', height: 'auto' }} 
+          style={{ 
+            width: '400px', 
+            maxWidth: '100%', 
+            height: 'auto',
+            display: 'block'
+          }} 
           alt="Logo" 
         />
         <h1 style={{ textAlign: 'center', fontSize: '1.8rem' }}>iTunes Music Explorer</h1>
       </header>
 
-      {/* CONTENEDOR DE BUSCADORES CON CLASE RESPONSIVA */}
+      {/* CONTENEDOR DE BUSCADORES */}
       <div className="responsive-container" style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '40px' }}>
         
         <div className="responsive-item" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '45%' }}>
@@ -111,7 +125,7 @@ function App() {
       )}
 
       {/* TABLA DE CANCIONES */}
-      {loadingSongs && <p style={{ textAlign: 'center' }}>Cargando...</p>}
+      {loadingSongs && <p style={{ textAlign: 'center', marginTop: '20px' }}>Cargando canciones...</p>}
       {!loadingSongs && songs.length > 0 && (
         <div style={{ marginTop: '30px', overflowX: 'auto', background: '#fff', padding: '15px', borderRadius: '10px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
           <table style={{ width: '100%', minWidth: '300px', borderCollapse: 'collapse' }}>
